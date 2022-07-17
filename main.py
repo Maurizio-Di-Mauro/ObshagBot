@@ -71,10 +71,12 @@ async def show_active_categories(message: types.Message):
 async def add_expense(message: types.Message):
     """Add new expense"""
     try:
-        await message.answer(expenses.add_expense(message.text))
+        expense = expenses.add_expense(message.text)
     except exceptions.IncorrectMessage as e:
         await message.answer(str(e))
         return
+    answer_message = f"Expense was added: {expense.amount} lari for {expense.category_name}.\n\n"
+    await message.answer(answer_message)
 
 
 if __name__ == '__main__':
