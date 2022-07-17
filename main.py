@@ -1,10 +1,12 @@
+import logging
+
 from aiogram import Bot, Dispatcher, executor, types
 
 import exceptions
 import expenses
 from config import Config
 
-
+logging.basicConfig(level=logging.INFO)
 config = Config()
 bot = Bot(token=config.TELEGRAM_API_TOKEN)
 dp = Dispatcher(Bot)
