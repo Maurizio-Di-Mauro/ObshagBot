@@ -18,6 +18,13 @@ def parse_message(raw_text: str) -> objects.ParsedMessage:
     return objects.ParsedMessage(amount=amount, category_text=category_text)
 
 
+def parse_int(value: Any) -> int:
+    try:
+        return int(value)
+    except Exception:
+        raise exceptions.IncorrectMessage("Error: wrong id!")
+
+
 def _parse_float(value: Any) -> float:
     try:
         return float(value)

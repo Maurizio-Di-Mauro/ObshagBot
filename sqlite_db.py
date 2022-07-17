@@ -2,6 +2,8 @@ from typing import Dict, List, Tuple
 import sqlite3 as sq
 import os
 
+from parsers import parse_int
+
 base = sq.connect(os.path.join("database", "obshag.db"))
 cursor = base.cursor()
 
@@ -39,6 +41,12 @@ def fetchall(table: str, columns: List[str]) -> List[Dict]:
             dict_row[column] = row[index]
         result.append(dict_row)
     return result
+
+
+def delete(table: str, row_id: int) -> None:
+    row_id: int = parse_int(row_id)
+    cursor.execute(f"delete from {table} where id={row_id}")
+    base.commit()
 
 
 def get_cursor():

@@ -39,7 +39,12 @@ async def welcome(message: types.Message):
 @dp.message_handler(lambda message: message.text.startswith('/del'))
 @auth
 async def delete_expense(message: types.Message):
-    pass
+    try:
+        row_id_str = message.text[4:]
+        expenses.delete_expense(row_id_str)
+        await message.answer("Successfully deleted!")
+    except exceptions.IncorrectMessage as e:
+        await message.answer(str(e))
 
 
 @dp.message_handler(commands=['today'])

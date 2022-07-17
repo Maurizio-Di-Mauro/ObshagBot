@@ -21,6 +21,11 @@ def add_expense(raw_input: str) -> objects.Expense:
     return objects.Expense(id=None, amount=parsed_message.amount, category_name=category.name)
 
 
+def delete_expense(row_id_str: str) -> None:
+    row_id: int = parsers.parse_int(row_id_str)
+    db.delete("expenses", row_id)
+
+
 def get_last_expenses() -> List[objects.Expense]:
     """Returns last expenses"""
     cursor = db.get_cursor()
