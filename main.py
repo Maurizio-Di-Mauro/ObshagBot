@@ -50,7 +50,7 @@ async def show_today(message: types.Message):
 
 @dp.message_handler(commands=['month'])
 @auth
-async def show_month(message: types.Message):
+async def show_this_month(message: types.Message):
     pass
 
 
