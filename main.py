@@ -1,15 +1,16 @@
 from aiogram import Bot, Dispatcher, executor, types
+from config import Config
 
-TRUSTED_IDS = ['', '']
 
-bot = Bot(token='')
+config = Config()
+bot = Bot(token=config.TELEGRAM_API_TOKEN)
 dp = Dispatcher(Bot)
 
 
 # this decorator will ensure that only certain users can use the bot
 def auth(func):
     async def wrapper(message: types.Message):
-        if message['from']['id'] not in TRUSTED_IDS:
+        if message['from']['id'] not in config.TRUSTED_IDS:
             return await message.reply("Access Denied", reply=False)
         return await func(message)
 
@@ -30,4 +31,5 @@ async def welcome(message: types.Message):
     await message.answer(help_text)
 
 
-executor.start_polling(dp)
+if __name__ == '__main__':
+    executor.start_polling(dp, skip_updates=True)
