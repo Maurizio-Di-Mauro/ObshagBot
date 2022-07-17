@@ -11,8 +11,7 @@ from categories import Categories
 def add_expense(raw_input: str) -> objects.Expense:
     """Creates new expense"""
     parsed_message: objects.ParsedMessage = parsers.parse_message(raw_input)
-    category: objects.Category = Categories().get_category(
-        parsed_message.category_text)
+    category: objects.Category = Categories().get_category(parsed_message.category_text)
     db.insert("expenses", {
         "amount": parsed_message.amount,
         "created_time": _get_now_formatted(),

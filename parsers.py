@@ -13,7 +13,7 @@ def parse_message(raw_text: str) -> objects.ParsedMessage:
                                           "[amount] [category]\n"
                                           "For example: 100 food")
 
-    amount: float = _parse_float(regex_result.group(1).replace(" ", ""))
+    amount: float = _round_traditionally(_parse_float(regex_result.group(1).replace(" ", "")), 2)
     category_text: str = regex_result.group(2).strip().lower()
     return objects.ParsedMessage(amount=amount, category_text=category_text)
 
@@ -23,3 +23,7 @@ def _parse_float(value: Any) -> float:
         return float(value)
     except Exception:
         raise exceptions.IncorrectMessage("Error: Amount should be written with numerals!")
+
+
+def _round_traditionally(number: float, digits: int) -> float:
+    return round(number + 10 ** (-len(str(number)) - 1), digits)
