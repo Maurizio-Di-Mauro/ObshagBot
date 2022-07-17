@@ -6,7 +6,7 @@ import objects
 
 
 def parse_message(raw_text: str) -> objects.ParsedMessage:
-    regex_result = re.match(r"([+-]?([0-9]*[.])?[0-9]+ ) (.*)", raw_text)
+    regex_result = re.match(r"((?<![a-zA-Z:])[-+]?\d*\.?\d+) (.*)", raw_text)
     if not regex_result or not regex_result.group(0) or not regex_result.group(1) or not regex_result.group(2):
         raise exceptions.IncorrectMessage("I don't understand your message:(\n"
                                           "Please, in order to add an expense follow this format:\n"
