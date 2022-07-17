@@ -41,6 +41,10 @@ def fetchall(table: str, columns: List[str]) -> List[Dict]:
     return result
 
 
+def get_cursor():
+    return cursor
+
+
 def _init_db():
     with open("createdb.sql", "r") as f:
         sql = f.read()

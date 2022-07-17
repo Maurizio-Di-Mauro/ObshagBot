@@ -45,7 +45,7 @@ async def delete_expense(message: types.Message):
 @dp.message_handler(commands=['today'])
 @auth
 async def show_today(message: types.Message):
-    pass
+    await message.answer(expenses.get_today_statistics())
 
 
 @dp.message_handler(commands=['month'])

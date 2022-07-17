@@ -16,4 +16,4 @@ create table expenses(
 insert into category (codename, name, aliases)
 values
     ("grocery", "food", "еда, продукты, магазин, супермаркет, food, products"),
-    ("other", "other", "прочее");
+    ("other", "other", "прочее, другое");
