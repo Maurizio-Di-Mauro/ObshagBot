@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher, executor, types
 import exceptions
 import expenses
 from config import Config
+from categories import Categories
 
 logging.basicConfig(level=logging.INFO)
 config = Config()
@@ -78,7 +79,10 @@ async def show_last_logged_expenses(message: types.Message):
 @dp.message_handler(commands=['categories'])
 @auth
 async def show_active_categories(message: types.Message):
-    pass
+    categories = Categories().get_all_categories()
+    answer_message = "Current categories:\n\n* " + \
+                     ("\n* ".join([c.name + ' (' + ", ".join(c.aliases) + ')' for c in categories]))
+    await message.answer(answer_message)
 
 
 @dp.message_handler()
