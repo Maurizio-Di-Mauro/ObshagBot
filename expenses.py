@@ -31,6 +31,18 @@ def get_today_statistics() -> str:
     return f"Today's expenses in total: {result[0]}\nThis month's expenses: /month"
 
 
+def get_this_month_statistics() -> str:
+    """Returns this month statistics"""
+    now: datetime.datetime = _get_now_datetime()
+    first_day_of_month = f'{now.year:04d}-{now.month:02d}-01'
+    cursor = db.get_cursor()
+    cursor.execute(f"select sum(amount) from expenses where date(created_time) >= '{first_day_of_month}'")
+    result = cursor.fetchone()
+    if not result[0]:
+        return "No expenses for this month"
+    return f"This month's expenses in total: {result[0]}"
+
+
 def _get_now_formatted() -> str:
     """Return today's date as str"""
     return _get_now_datetime().strftime("%Y-%m-%d %H:%M:%S")
