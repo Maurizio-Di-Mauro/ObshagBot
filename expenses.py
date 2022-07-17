@@ -1,3 +1,4 @@
+from typing import List
 import datetime
 import pytz
 
@@ -18,7 +19,20 @@ def add_expense(raw_input: str) -> objects.Expense:
         "category_codename": category.codename,
         "raw_text": raw_input
     })
-    return objects.Expense(amount=parsed_message.amount, category_name=category.name)
+    return objects.Expense(id=None, amount=parsed_message.amount, category_name=category.name)
+
+
+def get_last_expenses() -> List[objects.Expense]:
+    """Returns last expenses"""
+    cursor = db.get_cursor()
+    cursor.execute(
+        "select e.id, e.amount, c.name "
+        "from expenses e left join category c "
+        "on c.codename=e.category_codename "
+        "order by created_time desc limit 10")
+    rows = cursor.fetchall()
+    last_expenses = [objects.Expense(id=row[0], amount=row[1], category_name=row[2]) for row in rows]
+    return last_expenses
 
 
 def get_today_statistics() -> str:

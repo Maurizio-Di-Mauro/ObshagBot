@@ -57,7 +57,17 @@ async def show_this_month(message: types.Message):
 @dp.message_handler(commands=['expenses'])
 @auth
 async def show_last_logged_expenses(message: types.Message):
-    pass
+    last_expenses = expenses.get_last_expenses()
+    if not last_expenses:
+        await message.answer("No expenses yet")
+        return
+
+    last_expenses_rows = [
+        f"{expense.amount} lari for {expense.category_name} — tap "
+        f"/del{expense.id} for deletion"
+        for expense in last_expenses
+    ]
+    await message.answer("Last saved expenses:\n\n* " + "\n\n* ".join(last_expenses_rows))
 
 
 @dp.message_handler(commands=['categories'])

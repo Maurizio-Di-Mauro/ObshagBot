@@ -1,5 +1,5 @@
 """All the objects this bot is using"""
-from typing import NamedTuple, List
+from typing import NamedTuple, List, Optional
 
 
 class ParsedMessage(NamedTuple):
@@ -9,6 +9,7 @@ class ParsedMessage(NamedTuple):
 
 
 class Expense(NamedTuple):
+    id: Optional[int]
     amount: float
     category_name: str
 
