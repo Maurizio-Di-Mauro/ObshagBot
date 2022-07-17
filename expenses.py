@@ -24,7 +24,7 @@ def add_expense(raw_input: str) -> objects.Expense:
 def get_today_statistics() -> str:
     """returns today's spent amount of money"""
     cursor = db.get_cursor()
-    cursor.execute("select sum(amount) from expense where date(created)=date('now', 'localtime')")
+    cursor.execute("select sum(amount) from expenses where date(created_time)=date('now', 'localtime')")
     result = cursor.fetchone()
     if not result or not result[0]:
         return "No expenses for today"
