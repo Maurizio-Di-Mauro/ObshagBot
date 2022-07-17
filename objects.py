@@ -1,4 +1,5 @@
 """All the objects this bot is using"""
+from typing import NamedTuple
 
 
 class ParsedMessage(NamedTuple):
