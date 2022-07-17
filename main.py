@@ -9,7 +9,7 @@ from config import Config
 logging.basicConfig(level=logging.INFO)
 config = Config()
 bot = Bot(token=config.TELEGRAM_API_TOKEN)
-dp = Dispatcher(Bot)
+dp = Dispatcher(bot)
 
 
 # this decorator will ensure that only certain users can use the bot
@@ -71,7 +71,7 @@ async def show_active_categories(message: types.Message):
 async def add_expense(message: types.Message):
     """Add new expense"""
     try:
-        pass
+        await message.answer(expenses.add_expense(message.text))
     except exceptions.IncorrectMessage as e:
         await message.answer(str(e))
         return
