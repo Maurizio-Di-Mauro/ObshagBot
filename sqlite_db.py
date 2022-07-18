@@ -3,6 +3,7 @@ import sqlite3 as sq
 import os
 
 from parsers import parse_int
+import queries
 
 base = sq.connect(os.path.join("database", "obshag.db"))
 cursor = base.cursor()
@@ -32,7 +33,7 @@ def insert(table: str, column_values: Dict):
 
 def fetchall(table: str, columns: List[str]) -> List[Dict]:
     columns_joined = ", ".join(columns)
-    cursor.execute(f"SELECT {columns_joined} FROM {table}")
+    cursor.execute(queries.get_columns(columns_joined, table))
     rows = cursor.fetchall()
     result = []
     for row in rows:

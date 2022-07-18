@@ -10,9 +10,7 @@ class Categories:
 
     def _load_categories(self) -> List[Category]:
         """returns categories"""
-        categories: List[Dict] = db.fetchall(
-            "category", "codename name aliases".split()
-        )
+        categories: List[Dict] = db.fetchall("category", ["codename", "name", "aliases"])
         categories: List[Category] = self._fill_aliases(categories)
         return categories
 
