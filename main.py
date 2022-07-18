@@ -4,6 +4,7 @@ from aiogram import Bot, Dispatcher, executor, types
 
 import exceptions
 import expenses
+import objects
 from config import Config
 from categories import Categories
 
@@ -23,15 +24,25 @@ def auth(func):
     return wrapper
 
 
+def incorrect_message_handler(func):
+    async def wrapper(message: types.Message):
+        try:
+            await func(message)
+        except exceptions.IncorrectMessage as e:
+            return await message.answer(str(e))
+
+    return wrapper
+
+
 @dp.message_handler(commands=['start', 'help'])
 @auth
 async def welcome(message: types.Message):
     """Welcomes a user and shows all commands"""
     help_text: str = "Hello, Germann (with two 'n')! I am Obshag bot. Please, read the instructions\n\n"
     help_text += "Add expense: 1 food\n"
-    help_text += "Delete expense: /del [expense_id]\n"
-    help_text += "Today's data: /today\n"
-    help_text += "This month's data: /month\n"
+    help_text += "Delete expense: /del[expense_id]\n"
+    help_text += "Today's statistics: /today\n"
+    help_text += "This month's statistics: /month\n"
     help_text += "Last logged expenses: /expenses\n"
     help_text += "Current active categories: /categories"
     await message.answer(help_text)
@@ -39,29 +50,30 @@ async def welcome(message: types.Message):
 
 @dp.message_handler(lambda message: message.text.startswith('/del'))
 @auth
+@incorrect_message_handler
 async def delete_expense(message: types.Message):
-    try:
-        row_id_str = message.text[4:]
-        expenses.delete_expense(row_id_str)
-        await message.answer("Successfully deleted!")
-    except exceptions.IncorrectMessage as e:
-        await message.answer(str(e))
+    row_id_str = message.text[4:]
+    expenses.delete_expense(row_id_str)
+    await message.answer("Successfully deleted!")
 
 
 @dp.message_handler(commands=['today'])
 @auth
+@incorrect_message_handler
 async def show_today(message: types.Message):
     await message.answer(expenses.get_today_statistics())
 
 
 @dp.message_handler(commands=['month'])
 @auth
+@incorrect_message_handler
 async def show_this_month(message: types.Message):
     await message.answer(expenses.get_this_month_statistics())
 
 
 @dp.message_handler(commands=['expenses'])
 @auth
+@incorrect_message_handler
 async def show_last_logged_expenses(message: types.Message):
     last_expenses = expenses.get_last_expenses()
     if not last_expenses:
@@ -78,6 +90,7 @@ async def show_last_logged_expenses(message: types.Message):
 
 @dp.message_handler(commands=['categories'])
 @auth
+@incorrect_message_handler
 async def show_active_categories(message: types.Message):
     categories = Categories().get_all_categories()
     answer_message = "Current categories:\n\n* " + \
@@ -87,13 +100,10 @@ async def show_active_categories(message: types.Message):
 
 @dp.message_handler()
 @auth
+@incorrect_message_handler
 async def add_expense(message: types.Message):
     """Add new expense"""
-    try:
-        expense = expenses.add_expense(message.text)
-    except exceptions.IncorrectMessage as e:
-        await message.answer(str(e))
-        return
+    expense: objects.Expense = expenses.add_expense(message.text)
     answer_message = f"Expense was added: {expense.amount} lari for {expense.category_name}.\n\n"
     await message.answer(answer_message)
 
