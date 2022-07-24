@@ -3,7 +3,7 @@ import datetime
 import pytz
 
 import parsers
-import sqlite_db as db
+import db
 import objects
 import queries
 from categories import Categories

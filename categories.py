@@ -1,7 +1,7 @@
 from typing import Dict, List, NamedTuple
 
 from objects import Category
-import sqlite_db as db
+import db
 
 
 class Categories:
