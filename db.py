@@ -16,7 +16,7 @@ def test_connect_to_db(config: Config):
     conn = None
     try:
         # read connection parameters
-        params = config.get_database_config()
+        params = config.DATABASE_URL
 
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
