@@ -1,4 +1,4 @@
-create table category(
+create table categories (
     codename varchar(255) primary key,
     name varchar(255),
     aliases text
@@ -7,13 +7,14 @@ create table category(
 create table expenses(
     id integer primary key,
     amount float,
-    created_time datetime,
+    created_time timestamp,
     category_codename varchar(255),
     raw_text text,
-    FOREIGN KEY(category_codename) REFERENCES category(codename)
+    FOREIGN KEY(category_codename) REFERENCES categories(codename)
 );
 
-insert into category (codename, name, aliases)
-values
-    ("grocery", "food", "еда, продукты, магазин, супермаркет, food, products"),
-    ("other", "other", "прочее, другое");
+insert into categories (codename, name, aliases)
+VALUES ('grocery', 'food', 'еда, продукты, магазин, супермаркет, food, products');
+
+insert into categories (codename, name, aliases)
+values ('other', 'other', 'прочее, другое');
