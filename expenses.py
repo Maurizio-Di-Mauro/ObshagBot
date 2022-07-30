@@ -30,7 +30,7 @@ def delete_expense(row_id_str: str) -> None:
 def get_last_expenses() -> List[objects.Expense]:
     """Returns last expenses"""
     cursor = db.get_cursor()
-    cursor.execute(queries.get_list_of_expenses(10))
+    cursor.execute(queries.get_list_of_expenses(), 10)
     rows = cursor.fetchall()
     last_expenses = [objects.Expense(id=row[0], amount=row[1], category_name=row[2]) for row in rows]
     return last_expenses
@@ -51,7 +51,7 @@ def get_this_month_statistics() -> str:
     now: datetime.datetime = _get_now_datetime()
     first_day_of_month = f'{now.year:04d}-{now.month:02d}-01'
     cursor = db.get_cursor()
-    cursor.execute(queries.get_expenses_starting_from(first_day_of_month))
+    cursor.execute(queries.get_expenses_starting_from(), first_day_of_month)
     result = cursor.fetchone()
     if not result[0]:
         return "No expenses for this month"

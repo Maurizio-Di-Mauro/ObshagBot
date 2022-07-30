@@ -1,8 +1,8 @@
-from datetime import datetime
+from psycopg2.sql import Identifier, SQL
 
 
-def get_columns(columns_joined: str, table: str) -> str:
-    return f"SELECT {columns_joined} FROM {table}"
+def get_columns(columns_joined: str, table: str) -> SQL:
+    return SQL("SELECT {} FROM {}").format(Identifier(columns_joined), Identifier(table))
 
 
 def get_list_of_expenses() -> str:

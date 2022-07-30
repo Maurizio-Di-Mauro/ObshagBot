@@ -46,12 +46,9 @@ def test_connect_to_db(config: Config):
 def insert(table: str, column_values: Dict):
     columns = ', '.join( column_values.keys() )
     values = [tuple(column_values.values())]
-    placeholders = ", ".join("?" * len(column_values.keys()) )
-    cursor.executemany(
-        f"INSERT INTO {table} "
-        f"({columns}) "
-        f"VALUES ({placeholders})",
-        values)
+    placeholders = ", ".join("%s" * len(column_values.keys()))
+    cursor.executemany(ps.sql.SQL("INSERT INTO {} ({}) VALUES ({})").format(
+        ps.sql.Identifier(table), ps.sql.Identifier(columns), placeholders), values)
     base.commit()
 
 
@@ -70,7 +67,7 @@ def fetchall(table: str, columns: List[str]) -> List[Dict]:
 
 def delete(table: str, row_id: int) -> None:
     row_id: int = parse_int(row_id)
-    cursor.execute(f"delete from {table} where id={row_id}")
+    cursor.execute(ps.sql.SQL("delete from {} where id=%s").format(ps.sql.Identifier(table)), (row_id, ))
     base.commit()
 
 
